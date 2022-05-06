@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./songService
+        working-directory: songService
 
     steps:
       - name: Check Out Repo 
