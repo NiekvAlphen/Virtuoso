@@ -8,7 +8,9 @@ routes_blueprint = Blueprint('routes', __name__)
 
 @routes_blueprint.route('/')
 def home(): 
-    return "Hello world!"
+    messages = []
+    messages.append("Hello world!")
+    return jsonify({'messages': messages}), 200
 
 @routes_blueprint.route('/a')
 def a(): 
@@ -42,9 +44,7 @@ def songs():
                     'date_modified': song.date_modified
                 }
                 results.append(obj)
-            response = jsonify(results)
-            response.status_code = 200
-            return response
+            return jsonify({'songs': results}), 200
     
 @routes_blueprint.route('/songs/<id>', methods=['GET', 'PUT', 'DELETE'])
 def song_manipulation(id, **kwargs):
