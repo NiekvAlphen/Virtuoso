@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: CI-CD
+name: React Frontend CI-CD
 
 # Controls when the action will run.
 on:
@@ -69,11 +69,11 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.REACTUSERNAME }}/shopping-app-react:latest
+          tags: ${{ secrets.REACTUSERNAME }}/reactfrontendvir:latest
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: ${{ secrets.REACTUSERNAME }}/shopping-app-react:latest
+          image: ${{ secrets.REACTUSERNAME }}/reactfrontendvir:latest
           run: |
             echo "running the docker image"
