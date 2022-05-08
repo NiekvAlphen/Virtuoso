@@ -4,6 +4,8 @@ from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+from flask_cors import CORS
+
 # local importpy
 from instance.config import app_config
 
@@ -11,6 +13,7 @@ from instance.config import app_config
 db = SQLAlchemy()
 
 app = FlaskAPI(__name__, instance_relative_config=True)
+CORS(app)
 
 def create_app(config_name):
     
@@ -26,5 +29,8 @@ def create_app(config_name):
     migrate.init_app(app, db)
 
     app.register_blueprint(routes.routes_blueprint)
+
+    with app.app_context():
+        db.create_all()
 
     return app

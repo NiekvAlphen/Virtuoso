@@ -6,12 +6,13 @@ services:
       POSTGRES_PASSWORD: 'root'
       POSTGRES_DB: flask_api
       POSTGRES_USER: 'postgres'
-    ports:
-      - 5433:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    expose:
+      - 5432
   song_service:
-    depends_on: ["song_db"]
+    depends_on:
+      - song_db
     image: song_service
     build: 
       context: ./songService

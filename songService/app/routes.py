@@ -6,26 +6,30 @@ from app import app
 
 routes_blueprint = Blueprint('routes', __name__)
 
-@routes_blueprint.route('/')
+@routes_blueprint.route('/songapi/hello')
 def home(): 
     messages = []
     messages.append("Hello world!")
-    return jsonify({'messages': messages}), 200
+    response = jsonify({'messages': messages}), 200
+    return response
 
-@routes_blueprint.route('/a')
+@routes_blueprint.route('/songapi/a')
 def a(): 
     return "Het zal wel."
 
-@routes_blueprint.route('/songs/', methods=['POST', 'GET'])
+@routes_blueprint.route('/songapi/songs', methods=['POST', 'GET'])
 def songs():
         if request.method == "POST":
-            name = str(request.data.get('name', ''))
-            if name: 
-                song = models.Song(name=name)
+            title = str(request.data.get('title', ''))
+            if title: 
+                song = models.Song(title=title)
                 song.save()
                 response = jsonify({
                     'id': song.id,
                     'name': song.name,
+                    'artist': song.artist,
+                    'audio_file': song.audio_file,
+                    'genre': song.genre,
                     'date_created': song.date_created,
                     'date_modified': song.date_modified,
                 })
@@ -46,7 +50,7 @@ def songs():
                 results.append(obj)
             return jsonify({'songs': results}), 200
     
-@routes_blueprint.route('/songs/<id>', methods=['GET', 'PUT', 'DELETE'])
+@routes_blueprint.route('/songapi/songs/<id>', methods=['GET', 'PUT', 'DELETE'])
 def song_manipulation(id, **kwargs):
         # retrieve a song using it's ID
         song = models.Song.query.filter_by(id=id).first()
@@ -61,12 +65,15 @@ def song_manipulation(id, **kwargs):
             }, 200
         
         elif request.method == 'PUT':
-            name = str(request.data.get('name', ''))
-            song.name = name
+            title = str(request.data.get('title', ''))
+            song.title = title
             song.save()
             response = jsonify({
                 'id': song.id,
-                'name': song.name,
+                'title': song.title,
+                'artist': song.artist,
+                'audio_file': song.audio_file,
+                'genre': song.genre,
                 'date_created': song.date_created,
                 'date_modified': song.date_modified
             })
@@ -76,13 +83,16 @@ def song_manipulation(id, **kwargs):
             # GET
             response = jsonify({
                 'id': song.id,
-                'name': song.name,
+                'title': song.title,
+                'artist': song.artist,
+                'audio_file': song.audio_file,
+                'genre': song.genre,
                 'date_created': song.date_created,
                 'date_modified': song.date_modified
             })
             response.status_code = 200
             return response
 
-@routes_blueprint.route("/static/<path:filename>")
+@routes_blueprint.route("/songapi/static/<path:filename>")
 def staticfiles(filename):
     return send_from_directory(app.config["STATIC_FOLDER"], filename)

@@ -14,7 +14,7 @@ class Song(db.Model):
 
     def __init__(self, name):
         """Initialize with name."""
-        self.name = name
+        self.id = name
     
     def save(self):
         db.session.add(self)
