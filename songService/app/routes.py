@@ -26,7 +26,7 @@ def songs():
                 song.save()
                 response = jsonify({
                     'id': song.id,
-                    'name': song.name,
+                    'title': song.title,
                     'artist': song.artist,
                     'audio_file': song.audio_file,
                     'genre': song.genre,
@@ -43,7 +43,10 @@ def songs():
             for song in songs:
                 obj = {
                     'id': song.id,
-                    'name': song.name,
+                    'title': song.title,
+                    'artist': song.artist,
+                    'audio_file': song.audio_file,
+                    'genre': song.genre,
                     'date_created': song.date_created,
                     'date_modified': song.date_modified
                 }

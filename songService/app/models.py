@@ -8,13 +8,16 @@ class Song(db.Model):
     __tablename__ = 'songs'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    artist = db.Column(db.String(255))
+    audio_file = db.Column(db.String(255))
+    genre = db.Column(db.String(255))
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    def __init__(self, name):
+    def __init__(self, title):
         """Initialize with name."""
-        self.id = name
+        self.title = title
     
     def save(self):
         db.session.add(self)

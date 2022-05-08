@@ -31,6 +31,7 @@ def create_app(config_name):
     app.register_blueprint(routes.routes_blueprint)
 
     with app.app_context():
+        db.drop_all()
         db.create_all()
 
     return app
