@@ -8,8 +8,6 @@ services:
       POSTGRES_USER: 'postgres'
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    expose:
-      - 5432
   song_service:
     depends_on:
       - song_db
@@ -22,6 +20,24 @@ services:
       - "5000"
     volumes:
       - static_volume:/songService/static
+  user_db: 
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: user_db
+      POSTGRES_USER: 'postgres'
+    volumes:
+      - postgres-userdb-data:/var/lib/postgresql/data
+  user_service:
+    depends_on:
+      - user_db
+    image: user_service
+    build: 
+      context: ./userService
+    env_file:
+      - ./userService/.env
+    expose:
+      - "5000"
   nginx:
     image: nginx
     ports:
@@ -31,6 +47,7 @@ services:
       - static_volume:/songService/static
     depends_on: 
       - song_service
+      - user_service
   frontend:
     image: frontend
     restart: always
@@ -43,4 +60,5 @@ services:
 
 volumes:
   postgres-data:
+  postgres-userdb-data:
   static_volume:

@@ -16,7 +16,7 @@ class Song(db.Model):
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def __init__(self, title):
-        """Initialize with name."""
+        """Initialize with title."""
         self.title = title
     
     def save(self):
@@ -32,4 +32,4 @@ class Song(db.Model):
         db.session.commit()
     
     def __repr__(self):
-        return "".format(self.name)
+        return "".format(self.title)

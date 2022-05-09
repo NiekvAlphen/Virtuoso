@@ -1,6 +1,7 @@
 from app import models
 
 from flask import request, jsonify, abort, Blueprint, send_from_directory
+from werkzeug.utils import secure_filename
 
 from app import app
 
@@ -99,3 +100,15 @@ def song_manipulation(id, **kwargs):
 @routes_blueprint.route("/songapi/static/<path:filename>")
 def staticfiles(filename):
     return send_from_directory(app.config["STATIC_FOLDER"], filename)
+
+@routes_blueprint.route('/songapi/uploadfile',methods=['GET','POST'])
+def uploadfile():
+    if request.method == 'POST':
+        f = request.files['file']
+        filename = secure_filename(f.filename)
+
+        f.save(app.config['UPLOAD_FOLDER'] + filename)
+
+        with open(app.config['UPLOAD_FOLDER'] + filename,"rb") as f:
+            content = f.read()
+        return content
