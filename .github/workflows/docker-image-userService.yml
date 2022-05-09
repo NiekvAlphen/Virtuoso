@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image UserService CI
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          password: ${{ secrets.DOCKER_HUB_USERAPI_TOKEN }}
 
       - name: Set up Docker Buildx
         id: buildx
@@ -36,7 +36,7 @@ jobs:
           context: ./userService
           file: ./userService/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/simplewhale:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/userapici:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
