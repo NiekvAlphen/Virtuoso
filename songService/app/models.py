@@ -15,10 +15,13 @@ class Song(db.Model):
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    def __init__(self, title):
-        """Initialize with title."""
+    def __init__(self, title, artist, audio_file, genre):
+        """Initialize with title, artist, audio_file, genre."""
         self.title = title
-    
+        self.artist = artist
+        self.audio_file = audio_file
+        self.genre = genre
+
     def save(self):
         db.session.add(self)
         db.session.commit()

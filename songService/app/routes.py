@@ -7,23 +7,26 @@ from app import app
 
 routes_blueprint = Blueprint('routes', __name__)
 
-@routes_blueprint.route('/songapi/hello')
+@routes_blueprint.route('/api/songs/hello')
 def home(): 
     messages = []
     messages.append("Hello world!")
     response = jsonify({'messages': messages}), 200
     return response
 
-@routes_blueprint.route('/songapi/a')
+@routes_blueprint.route('/api/songs/a')
 def a(): 
     return "Het zal wel."
 
-@routes_blueprint.route('/songapi/songs', methods=['POST', 'GET'])
+@routes_blueprint.route('/api/songs', methods=['POST', 'GET'])
 def songs():
         if request.method == "POST":
             title = str(request.data.get('title', ''))
+            artist = str(request.data.get('artist', ''))
+            audio_file = str(request.data.get('audio_file', ''))
+            genre = str(request.data.get('genre', ''))
             if title: 
-                song = models.Song(title=title)
+                song = models.Song(title=title, artist=artist, audio_file=audio_file, genre=genre)
                 song.save()
                 response = jsonify({
                     'id': song.id,
@@ -54,7 +57,7 @@ def songs():
                 results.append(obj)
             return jsonify({'songs': results}), 200
     
-@routes_blueprint.route('/songapi/songs/<id>', methods=['GET', 'PUT', 'DELETE'])
+@routes_blueprint.route('/api/songs/<id>', methods=['GET', 'PUT', 'DELETE'])
 def song_manipulation(id, **kwargs):
         # retrieve a song using it's ID
         song = models.Song.query.filter_by(id=id).first()
