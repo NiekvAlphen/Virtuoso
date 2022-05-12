@@ -1,4 +1,4 @@
-name: Docker Image UserService CI
+name: Frontend CI
 
 on:
   push:
