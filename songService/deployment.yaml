@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: song
-        image: niekvalphen/simplewhale
+        image: niekvalphen/simplewhale:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: niekvalphen/userapici
+        image: niekvalphen/userapici:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
