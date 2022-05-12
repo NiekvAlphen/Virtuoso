@@ -73,10 +73,3 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.REACTUSERNAME }}/reactfrontendvir:latest
-
-      - name: Run the image in a container
-        uses: addnab/docker-run-action@v3
-        with:
-          image: ${{ secrets.REACTUSERNAME }}/reactfrontendvir:latest
-          run: |
-            echo "running the docker image"
