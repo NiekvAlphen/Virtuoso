@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 
 # local importpy
-from config import DevelopmentConfig
+from app import config
 
 # initialize sql-alchemy
 db = SQLAlchemy()
@@ -17,7 +17,7 @@ CORS(app)
 
 def create_app():
     
-    app.config.from_object(DevelopmentConfig)
+    app.config.from_object(config.DevelopmentConfig)
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["UPLOAD_FOLDER"] = "/static"
