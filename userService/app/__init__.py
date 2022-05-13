@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 # local importpy
 #from instance.config import app_config
-from instance import config
+from app import config
 
 # initialize sql-alchemy
 db = SQLAlchemy()

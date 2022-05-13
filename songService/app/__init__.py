@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 
 # local importpy
-from instance import config
+from app import config
 
 # initialize sql-alchemy
 db = SQLAlchemy()
