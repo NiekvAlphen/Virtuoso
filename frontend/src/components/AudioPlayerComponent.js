@@ -3,7 +3,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 export default function AudioPlayerComponent() {
-    const musicTracks = [
+  const musicTracks = [
         {
           name: "Memories",
           src: "https://www.bensound.com/bensound-music/bensound-memories.mp3"
@@ -80,7 +80,7 @@ export default function AudioPlayerComponent() {
     return (
         <div className="AudioPlayerComponent">
             <AudioPlayer
-                style={{borderRadius: "1rem", position: "fixed", left: "0", bottom: "0", right: "0"}}
+                style={{borderRadius: "1rem 1rem 0px 0px", position: "fixed", left: "0", bottom: "0", right: "0"}}
                 autoplay
                 src={musicTracks[trackIndex].src}
                 onPlay={(e) => console.log("onPlay")}
