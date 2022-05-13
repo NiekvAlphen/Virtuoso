@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 
 # local importpy
-from app import config
+from instance.config import app_config
 
 # initialize sql-alchemy
 db = SQLAlchemy()
@@ -15,9 +15,9 @@ db = SQLAlchemy()
 app = FlaskAPI(__name__, instance_relative_config=True)
 CORS(app)
 
-def create_app():
+def create_app(config_name):
     
-    app.config.from_object(config.DevelopmentConfig)
+    app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

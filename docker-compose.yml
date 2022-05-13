@@ -1,16 +1,6 @@
 version: '3'
 services: 
-  song_db: 
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: 'root'
-      POSTGRES_DB: flask_api
-      POSTGRES_USER: 'postgres'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
   song_service:
-    depends_on:
-      - song_db
     image: song_service
     build: 
       context: ./songService
@@ -20,17 +10,7 @@ services:
       - "5000"
     volumes:
       - static_volume:/songService/static
-  user_db: 
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: 'root'
-      POSTGRES_DB: user_db
-      POSTGRES_USER: 'postgres'
-    volumes:
-      - postgres-userdb-data:/var/lib/postgresql/data
   user_service:
-    depends_on:
-      - user_db
     image: user_service
     build: 
       context: ./userService
@@ -70,6 +50,4 @@ services:
       - '15672:15672'
 
 volumes:
-  postgres-data:
-  postgres-userdb-data:
   static_volume:

@@ -5,8 +5,21 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '',
+            email: '',
+            password: '',
+            alreadyExists: false
         };
+        this.handleUsernameChange = this.handleUsernameChange.bind(this)
+        this.handlePasswordChange = this.handlePasswordChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleUsernameChange(event) {
+        this.setState({username: event.target.value})
+    }
+    handlePasswordChange(event) {
+        this.setState({password: event.target.value})
     }
 
     handleSubmit(event) {
@@ -17,11 +30,8 @@ class Login extends React.Component {
 
     login() {
         const data = new FormData()
-        data.append("id", 1)
-        data.append("username", 'Ron')
-        data.append('password', 'doei')
-        data.append('email', 'ron@gmail.com')
-        data.append('image', 'noimage.png')
+        data.append("username", this.state.username)
+        data.append('password', this.state.password)
 
         fetch('http://127.0.0.1:80/api/users/login', {method: 'POST', body: data,mode: 'cors'})
         .then(response => {
@@ -49,12 +59,12 @@ class Login extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-container">
                         <label>Username </label>
-                        <input type="text" name="uname" required />
+                        <input type="text" name="uname" required value={this.state.username} onChange={this.handleUsernameChange}/>
 
                     </div>
                     <div className="input-container">
                         <label>Password </label>
-                        <input type="password" name="pass" required />
+                        <input type="password" name="pass" required value={this.state.password} onChange={this.handlePasswordChange}/>
 
                     </div>
                      <div className="button-container">
