@@ -1,40 +1,34 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: api-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  defaultBackend:
-    service:
-      name: default-http-backend
-      port: 
-        number: 80
+  ingressClassName: nginx
   rules:
-  - host: myminikube.info
-    http:
+  - http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend-service
-            port: 
-              number: 8080
-  - host: microservices.all
-    http:
-      paths:
-      - path: /api/songs
-        pathType: Prefix
-        backend:
-          service:
-            name: song-service
-            port: 
-              number: 80
-      - path: /api/users
+      - path: /api/users(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: user-service
-            port: 
+            port:
+              number: 80
+      - path: /api/songs(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: song-service
+            port:
+              number: 80
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: song-service
+            port:
               number: 80
