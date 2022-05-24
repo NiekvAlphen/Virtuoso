@@ -3,11 +3,8 @@ kind: Service
 metadata:
   name: user-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: user-service
   ports:
-  - protocol: TCP
-  port: 8000
-  targetPort: 80
-  nodePort: 31000
+  - port: 80

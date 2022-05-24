@@ -3,11 +3,8 @@ kind: Service
 metadata:
   name: song-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: song-service
   ports:
-  - protocol: TCP
-  port: 8000
-  targetPort: 80
-  nodePort: 31000
+  - port: 80
