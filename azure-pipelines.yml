@@ -45,7 +45,7 @@ stages:
         tags: |
           $(tag)
 
-    - upload: $(System.DefaultWorkingDirectory)/userService
+    - upload: $(System.DefaultWorkingDirectory)/userService/manifests
       artifact: manifests
 
 - stage: Deploy
