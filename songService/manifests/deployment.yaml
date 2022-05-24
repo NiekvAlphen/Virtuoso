@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song
+  labels:
+    app: song
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: song
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: song
+    spec:
+      containers:
+      - name: song
+        image: niekvalphen/simplewhale:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

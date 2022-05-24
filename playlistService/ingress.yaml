@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: song-ingress
+spec:
+  tls:
+    - hosts:
+      - minikubesong
+      secretName: minikubesong-secret
+  rules:
+  - host: minikubesong
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: song-service
+            port: 
+              number: 5001

@@ -1,27 +1,21 @@
 # app/models.py
 
 from app import db
-from producer import publish 
 
-class Song(db.Model):
-    """This class represents the song table."""
+class Playlist(db.Model):
+    """This class represents the playlist table."""
 
-    __tablename__ = 'songs'
+    __tablename__ = 'playlists'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
-    artist = db.Column(db.String(255))
-    audio_file = db.Column(db.String(255))
-    genre = db.Column(db.String(255))
+    creator = db.Column(db.String(255))
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    def __init__(self, title, artist, audio_file, genre):
-        """Initialize with title, artist, audio_file, genre."""
+    def __init__(self, title):
+        """Initialize with title."""
         self.title = title
-        self.artist = artist
-        self.audio_file = audio_file
-        self.genre = genre
 
     def save(self):
         db.session.add(self)
@@ -29,8 +23,7 @@ class Song(db.Model):
     
     @staticmethod
     def get_all():
-        publish()
-        return Song.query.all()
+        return Playlist.query.all()
     
     def delete(self):
         db.session.delete(self)
