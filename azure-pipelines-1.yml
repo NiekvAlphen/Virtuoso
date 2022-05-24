@@ -43,7 +43,7 @@ stages:
         tags: |
           $(tag)
 
-    - upload: manifests
+    - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
 
 - stage: Deploy
@@ -55,7 +55,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'NiekvAlphenVirtuoso-1776.default'
+    environment: 'songService.default'
     strategy:
       runOnce:
         deploy:
