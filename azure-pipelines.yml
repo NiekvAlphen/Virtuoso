@@ -45,8 +45,8 @@ stages:
         tags: |
           $(tag)
 
-    - upload: manifests
-      artifact: manifests
+    - upload: userService/manifests
+      artifact: userService/manifests
 
 - stage: Deploy
   displayName: Deploy stage
@@ -58,7 +58,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'NiekvAlphenVirtuoso.default'
+    environment: 'userService.default'
     strategy:
       runOnce:
         deploy:
