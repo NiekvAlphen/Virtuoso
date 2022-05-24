@@ -1,22 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
-  labels:
-    app: user
+  name: user-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user
+      app: user-service
   template:
     metadata:
       labels:
-        app: user
+        app: user-service
     spec:
       containers:
-      - name: user
-        image: niekvalphen/userapici:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
+        - name: user-service
+          image: niekvalphen/userapici:latest
+          ports:
+          - containerPort: 80
