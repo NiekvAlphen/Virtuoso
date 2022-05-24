@@ -3,7 +3,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  paths:
+    include:
+      - 'songService/*'
 
 resources:
 - repo: self
@@ -12,9 +14,9 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'ac6da9a6-b6a9-497c-922e-128973996a2a'
-  imageRepository: 'songservice'
+  imageRepository: 'songService'
   containerRegistry: 'virtuosoregistery.azurecr.io'
-  dockerfilePath: 'songService/Dockerfile'
+  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'virtuosoregistery17401561-auth'
 
