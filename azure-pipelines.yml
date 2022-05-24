@@ -3,7 +3,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  paths:
+    include:
+      - 'userService/*'
 
 resources:
 - repo: self
@@ -12,9 +14,9 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'd0e3ee37-13b1-4c07-8b37-886f90a51e1f'
-  imageRepository: 'niekvalphenvirtuoso'
+  imageRepository: 'userService'
   containerRegistry: 'virtuosoregistery.azurecr.io'
-  dockerfilePath: '**/userService/Dockerfile'
+  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'virtuosoregistery1b0a-auth'
 
