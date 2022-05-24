@@ -45,7 +45,7 @@ stages:
         tags: |
           $(tag)
 
-    - upload: $(System.DefaultWorkingDirectory)
+    - upload: $(System.DefaultWorkingDirectory)/userService
       artifact: manifests
 
 - stage: Deploy
@@ -88,7 +88,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'NiekvAlphenVirtuoso.$(k8sNamespaceForPR)'
+    environment: 'userService.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
