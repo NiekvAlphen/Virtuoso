@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: 'd0e3ee37-13b1-4c07-8b37-886f90a51e1f'
   imageRepository: 'niekvalphenvirtuoso'
   containerRegistry: 'virtuosoregistery.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '**/userService/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'virtuosoregistery1b0a-auth'
 
