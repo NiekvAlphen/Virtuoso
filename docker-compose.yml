@@ -45,6 +45,24 @@ services:
       - ./userService/.env
     expose:
       - "5000"
+  playlist_db: 
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: playlist_db
+      POSTGRES_USER: 'postgres'
+    volumes:
+      - postgres-playlistdb-data:/var/lib/postgresql/data
+  playlist_service:
+    depends_on:
+      - playlist_db
+    image: playlist_service
+    build: 
+      context: ./playlistService
+    env_file:
+      - ./playlistService/.env
+    expose:
+      - "5000"
   nginx:
     image: nginx
     ports:
@@ -69,3 +87,4 @@ volumes:
   static_volume:
   postgres-userdb-data:
   postgres-data:
+  postgres-playlistdb-data:

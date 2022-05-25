@@ -12,7 +12,7 @@ def callback(ch, method, properties, body):
     print('Received in songService')
     print(body)
 
-channel.basic_consume(queue='songService', on_message_callback=callback)
+channel.basic_consume(queue='songService', on_message_callback=callback, auto_ack=True)
 
 print('Start Consuming')
 

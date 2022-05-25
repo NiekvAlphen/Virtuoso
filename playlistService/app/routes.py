@@ -30,6 +30,7 @@ def playlists():
                     'id': playlist.id,
                     'title': playlist.title,
                     'creator': playlist.creator,
+                    'songs_array': playlist.songs_array,
                     'date_created': playlist.date_created,
                     'date_modified': playlist.date_modified,
                 })
@@ -45,6 +46,7 @@ def playlists():
                     'id': playlist.id,
                     'title': playlist.title,
                     'creator': playlist.creator,
+                    'songs_array': playlist.songs_array,
                     'date_created': playlist.date_created,
                     'date_modified': playlist.date_modified
                 }
@@ -73,6 +75,7 @@ def song_manipulation(id, **kwargs):
                 'id': playlist.id,
                 'title': playlist.title,
                 'creator': playlist.creator,
+                'songs_array': playlist.songs_array,
                 'date_created': playlist.date_created,
                 'date_modified': playlist.date_modified
             })
@@ -84,6 +87,7 @@ def song_manipulation(id, **kwargs):
                 'id': playlist.id,
                 'title': playlist.title,
                 'creator': playlist.creator,
+                'songs_array': playlist.songs_array,
                 'date_created': playlist.date_created,
                 'date_modified': playlist.date_modified
             })
