@@ -25,11 +25,11 @@ variables:
 
 
 stages:
-- stage: Prepare
-  displayName: Prepare Analysis Configuration
+- stage: SonarCloudPrepare@1
+  displayName: SonarCloudPrepare@1
   jobs:
-    - job: Prepare
-      displayName: Analysis Configuration
+    - job: SonarCloudPrepare
+      displayName: SonarCloudPrepare@1
       steps:
       - task: SonarCloudPrepare@1
         inputs:
