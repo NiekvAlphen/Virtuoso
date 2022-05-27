@@ -35,6 +35,13 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'sonarcloud'
+        organization: '409046'
+        scannerMode: 'CLI'
+        configMode: 'file'
+
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -47,6 +54,11 @@ stages:
 
     - upload: $(System.DefaultWorkingDirectory)/userService/manifests
       artifact: manifests
+    
+    - task: SonarCloudAnalyze@1
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
 
 - stage: Deploy
   displayName: Deploy stage
