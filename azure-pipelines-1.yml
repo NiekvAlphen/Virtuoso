@@ -25,6 +25,17 @@ variables:
 
 
 stages:
+- stage: Prepare Analysis Configuration
+  jobs:
+    - job: Prepare 
+      steps:
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'sonarcloud'
+          organization: '409046'
+          scannerMode: 'CLI'
+          configMode: 'file'
+
 - stage: Build
   displayName: Build stage
   jobs:
@@ -45,6 +56,11 @@ stages:
 
     - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
+    
+    - task: SonarCloudAnalyze@1
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
 
 - stage: Deploy
   displayName: Deploy stage
@@ -78,4 +94,3 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
