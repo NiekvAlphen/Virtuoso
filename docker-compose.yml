@@ -53,6 +53,13 @@ services:
       POSTGRES_USER: 'postgres'
     volumes:
       - postgres-playlistdb-data:/var/lib/postgresql/data
+  playlist_queue:
+    build:
+      context: ./playlistService
+      dockerfile: Dockerfile
+    command: 'python3 -u consumer.py'
+    depends_on:
+      - playlist_db
   playlist_service:
     depends_on:
       - playlist_db
