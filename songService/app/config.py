@@ -33,6 +33,7 @@ class ProductionConfig(object):
     """Configurations for Production."""
     DEBUG = False
     TESTING = False
+    SQLALCHEMY_DATABASE_URI = "mssql+pymssql://niekva:*Ws>C+7jT=5bLTc>@virtuosodb.database.windows.net/virtuoso"
 
 app_config = {
     'development': DevelopmentConfig,

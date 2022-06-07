@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { render } from 'react-dom';
 import {useNavigate} from 'react-router-dom';
+import {createUser} from '../utils/models.js';
 class SignUp extends React.Component {
     constructor(props) {
         super(props);
@@ -42,32 +43,21 @@ class SignUp extends React.Component {
     }
 
     signUp() {
-        const data = new FormData()
-        data.append("id", 1)
-        data.append("username", this.state.username)
-        data.append('password', this.state.password)
-        data.append('email', this.state.email)
-        data.append('image', 'noimage.png')
+        try {
+            const data = new FormData()
+            data.append("id", 1)
+            data.append("username", this.state.username)
+            data.append('password', this.state.password)
+            data.append('email', this.state.email)
+            data.append('image', null)
+            if(createUser(data)) {
+                this.props.navigate('/create');
+            }
 
-        fetch('http://127.0.0.1:80/api/users', {method: 'POST', body: data,mode: 'cors'})
-        .then(response => {
-          console.log(response)
-          if(response.status === 201){
-            (response.json()).then((data) => {
-              //this.setState({songs: data['songs']})
-              console.log(data)
-              var user = { 'id': data.id, 'username': data.username, 'password': data.password, 'email': data.email, 'image': data.image };
-              localStorage.setItem('user', JSON.stringify(user));
-              this.props.navigate('/create');
-            })
-          } else {
-            (response.json()).then(() => {
-              //this.setState({songs: 'error'})
-            })
-          }
-        }).catch((error) => {
-            console.log("Error in fetching.", error)
-        })
+        }
+        catch(error) {
+            console.log("Error in sign up.", error)
+        }
     }
 
     render() {

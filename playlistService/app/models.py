@@ -9,7 +9,7 @@ class Playlist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
-    creator = db.Column(db.String(255))
+    creator = db.Column(db.Integer)
     songs_array = db.Column(db.JSON)
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

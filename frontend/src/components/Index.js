@@ -5,19 +5,11 @@ import {createUser, getUser} from '../utils/models';
 const Index = () => {
     const navigate = useNavigate()
 
-    if (localStorage.getItem('user')) {
-        navigate('/create')
-    }
-
     const Signup = () => {
-        console.log("signup")
-
         navigate('/signup')
     }
 
     const Login = () => {
-        console.log("login")
-
         navigate('/login')
     }
 

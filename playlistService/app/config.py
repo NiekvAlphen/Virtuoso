@@ -16,7 +16,7 @@ class Config(object):
 
 class DevelopmentConfig(object):
     """Configurations for development."""
-    #SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@song_db:5432/flask_api'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@playlist_db:5432/playlist_db'
     DEBUG = True
 
 class TestingConfig(object):

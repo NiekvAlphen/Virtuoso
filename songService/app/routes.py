@@ -100,6 +100,47 @@ def song_manipulation(id, **kwargs):
             response.status_code = 200
             return response
 
+@routes_blueprint.route('/api/songs/search/<term>', methods=['GET', 'PUT', 'DELETE'])
+def song_search(term, **kwargs):
+        # GET
+        # retrieve a song using a term matching it's title
+        term = term.replace('%20', ' ')
+        song = models.Song.query.filter_by(title=term).first()
+        if not song:
+            # retrieve a song using a term matching it's artist
+            song = models.Song.query.filter_by(artist=term).first()
+
+            if not song:
+                # Raise an HTTPException with a 404 not found status status_code
+                abort(404)
+            else:
+                response = jsonify({
+                'id': song.id,
+                'title': song.title,
+                'artist': song.artist,
+                'audio_file': song.audio_file,
+                'genre': song.genre,
+                'date_created': song.date_created,
+                'date_modified': song.date_modified
+                })
+                response.status_code = 200
+                return response
+        else: 
+            arrayResponses = []
+            response = {
+                'id': song.id,
+                'title': song.title,
+                'artist': song.artist,
+                'audio_file': song.audio_file,
+                'genre': song.genre,
+                'date_created': song.date_created,
+                'date_modified': song.date_modified
+            }
+            arrayResponses.append(response)
+            finalResponse = jsonify(arrayResponses)
+            finalResponse.status_code = 200
+            return finalResponse
+
 @routes_blueprint.route("/songapi/static/<path:filename>")
 def staticfiles(filename):
     return send_from_directory(app.config["STATIC_FOLDER"], filename)

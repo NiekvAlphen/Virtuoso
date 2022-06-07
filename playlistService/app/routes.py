@@ -93,3 +93,23 @@ def song_manipulation(id, **kwargs):
             })
             response.status_code = 200
             return response
+
+@routes_blueprint.route('/api/playlists/search/<user_id>', methods=['GET', 'PUT', 'DELETE'])
+def playlist_search(user_id, **kwargs):
+        # retrieve a playlist using it's ID
+        playlist = models.Playlist.query.filter_by(creator=user_id).first()
+        if not playlist:
+            # Raise an HTTPException with a 404 not found status status_code
+            abort(404)
+        else: 
+            # GET
+            response = jsonify({
+                'id': playlist.id,
+                'title': playlist.title,
+                'creator': playlist.creator,
+                'songs_array': playlist.songs_array,
+                'date_created': playlist.date_created,
+                'date_modified': playlist.date_modified
+            })
+            response.status_code = 200
+            return response
