@@ -54,22 +54,16 @@ stages:
     - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
     
-    - bash: | 
-        pip install pytest
-        pip install pytest-cov
-        pip install pytest-xdist
-        pip install pytest-bdd
-      displayName: 'Install a bunch of pip packages'
-    
-    - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test_song.xml'
-      workingDirectory: $(Build.SourcesDirectory)/songService/test_song.py
-      displayName: 'Run test song'
+    - task: DockerCompose@0
+      displayName: Run Python tests
+      inputs:
+        dockerComposeCommand: |
+          run --rm python bash -c "python3 test_song.py"
     
     - task: PublishTestResults@2
-      displayName: 'Publish test result /test_song.xml'
+      displayName: Publish test results
       inputs:
-        testResultsFiles: '$(Build.StagingDirectory)/test_song.xml'
-        testRunTitle: test_song
+        testResultsFiles: $(System.DefaultWorkingDirectory)/testresults.xml
     
     - task: SonarCloudAnalyze@1
     - task: SonarCloudPublish@1
