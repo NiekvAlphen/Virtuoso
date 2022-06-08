@@ -19,7 +19,7 @@ variables:
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'virtuosoregistery17401561-auth'
-  testfilePath: '**/test_song.py'
+  testfilePath: 'songService/test_song.py'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
