@@ -54,6 +54,23 @@ stages:
     - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
     
+    - bash: | 
+        pip install pytest
+        pip install pytest-cov
+        pip install pytest-xdist
+        pip install pytest-bdd
+      displayName: 'Install a bunch of pip packages'
+    
+    - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test_song.xml'
+      workingDirectory: '**/test_song.py'
+      displayName: 'Run test song'
+    
+    - task: PublishTestResults@2
+      displayName: 'Publish test result /test_song.xml'
+      inputs:
+        testResultsFiles: '$(Build.StagingDirectory)/test_song.xml'
+        testRunTitle: test_song
+    
     - task: SonarCloudAnalyze@1
     - task: SonarCloudPublish@1
       inputs:
