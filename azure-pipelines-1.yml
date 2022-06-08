@@ -19,6 +19,7 @@ variables:
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'virtuosoregistery17401561-auth'
+  testfilePath: '**/test_song.py'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -62,7 +63,7 @@ stages:
       displayName: 'Install a bunch of pip packages'
     
     - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test_song.xml'
-      workingDirectory: $(System.DefaultWorkingDirectory)/songService/test_song.py
+      workingDirectory: $(testfilePath)
       displayName: 'Run test song'
     
     - task: PublishTestResults@2
