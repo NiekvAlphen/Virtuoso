@@ -54,16 +54,15 @@ stages:
     - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
     
-    - task: DockerCompose@0
-      displayName: Run Python tests
-      inputs:
-        dockerComposeCommand: |
-          run --rm python bash -c "python3 test_song.py"
-    
-    - task: PublishTestResults@2
-      displayName: Publish test results
-      inputs:
-        testResultsFiles: $(System.DefaultWorkingDirectory)/testresults.xml
+    - script: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-azurepipelines
+        pip install -e .
+      displayName: 'Install dependencies'
+
+    - script: |
+        python -m pytest songService/test_song.py
+      displayName: 'pytest'
     
     - task: SonarCloudAnalyze@1
     - task: SonarCloudPublish@1
