@@ -26,7 +26,7 @@ class Song(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-        publish('product_created', self)
+        #publish('product_created', self)
     
     @staticmethod
     def get_all():
@@ -35,7 +35,7 @@ class Song(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        publish('product_deleted', self.id)
+        #publish('product_deleted', self.id)
     
     def __repr__(self):
         return "".format(self.title)
