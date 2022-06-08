@@ -62,7 +62,7 @@ stages:
       displayName: 'Install a bunch of pip packages'
     
     - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test_song.xml'
-      workingDirectory: '**/test_song.py'
+      workingDirectory: 'songService/test_song.py'
       displayName: 'Run test song'
     
     - task: PublishTestResults@2
