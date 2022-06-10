@@ -43,6 +43,9 @@ jobs:
         
   scrape:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: userService
     steps:
       - name: Check out this repo
         uses: actions/checkout@v2
