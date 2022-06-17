@@ -56,7 +56,6 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'songService.ingress-basic'
     strategy:
       runOnce:
         deploy:
