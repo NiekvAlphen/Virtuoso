@@ -86,7 +86,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'NiekvAlphenVirtuoso.$(k8sNamespaceForPR)'
+    environment: 'songService.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
