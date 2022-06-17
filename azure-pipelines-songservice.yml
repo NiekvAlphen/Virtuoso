@@ -33,13 +33,6 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'sonarcloud'
-        organization: '409046'
-        scannerMode: 'CLI'
-        configMode: 'file'
     
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -53,21 +46,6 @@ stages:
 
     - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
-    
-    - script: |
-        python3 -m pip install --upgrade pip
-        pip install pytest pytest-azurepipelines
-        pip install -e .
-      displayName: 'Install dependencies'
-
-    - script: |
-        python3 -m pytest songService/test_song.py
-      displayName: 'pytest'
-    
-    - task: SonarCloudAnalyze@1
-    - task: SonarCloudPublish@1
-      inputs:
-        pollingTimeoutSec: '300'
 
 - stage: Deploy
   displayName: Deploy stage
