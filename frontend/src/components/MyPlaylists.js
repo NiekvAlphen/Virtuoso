@@ -1,25 +1,40 @@
 import React, {useState, useEffect} from 'react';
 import NavBar from './NavBar'
 import {useNavigate} from 'react-router-dom';
-import {deletePlaylist, getPlaylists} from "../utils/models";
+import {deletePlaylist, getPlaylists, getSong} from "../utils/models";
 import bgImg from '../assets/user-profile-default.png';
 import Song from './Song';
-const MyCollections = () => {
+const MyPlaylists = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("user")));
+    const [userData, setUserData] = useState();
     const [playlists, setPlaylists] = useState([])
     const [activePlaylist, setactivePlaylist] = useState()
+    const [songs, setSongs] = useState([])
     useEffect(() => {
-        if(!localStorage.getItem("user")) {
-            navigate("/");
+        if (!localStorage.getItem('user')) {
+            navigate('/')       
         }
-        getPlaylists(userData?.user_id).then(request => {
-            return setPlaylists(request)
-        }).catch((error) => console.log(error.message))
-        if (!userData) {
-            setUserData(JSON.parse(localStorage.getItem("user")));
-        }
-    }, [userData, navigate]);
+        setUserData(JSON.parse(localStorage.getItem('user')))
+
+        const getMyPlaylists = async () => {
+            const newPlaylists = [...playlists]
+            newPlaylists.push(await getPlaylists(1))
+            
+            const newSongs = [...songs]
+            console.log(newPlaylists[0].songs_array)
+            newSongs.push(await getSong(newPlaylists[0].songs_array))
+
+            console.log(newSongs)
+
+            setPlaylists(newPlaylists)
+
+            setSongs(newSongs)
+        };
+
+        getMyPlaylists()
+            .catch(console.error)
+    }, []);
+        
 
     const togglePlaylist = (id) => {
         if (activePlaylist === id) {
@@ -40,7 +55,7 @@ const MyCollections = () => {
         <>
             <NavBar userData={userData} />
             <div className="container">
-                <h1>My Collections</h1>
+                <h1>My Playlists</h1>
                 <article className="section">
                     <div className="songList">
                         <div className="playList">
@@ -50,7 +65,7 @@ const MyCollections = () => {
                                         <div>
                                             <div className="item">
                                                 <div>
-                                                    <h3>{playlist.name}</h3>
+                                                    <h3>{playlist.title}</h3>
                                                 </div>
                                                 <button className="btn" onClick={(e) => {
                                                     e.preventDefault() 
@@ -61,7 +76,7 @@ const MyCollections = () => {
                                     </li>
                                     {activePlaylist === playlists.id && 
                                         <div>
-                                            {playlist.songs.map((song) => { 
+                                            {songs?.map((song) => { 
                                                 return (
                                                     <Song key={song.id} song={song} />
                                                 )})}
@@ -75,4 +90,4 @@ const MyCollections = () => {
         </>
     )
 }
-export default MyCollections
+export default MyPlaylists

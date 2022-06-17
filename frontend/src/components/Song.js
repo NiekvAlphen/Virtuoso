@@ -23,7 +23,6 @@ const Song = ({ song, onAdd, onRemove, isRemoval }) => {
                     </div>
                 </div>
             </li>
-            <li>Spotify Card</li>
         </ul>
     )
 }

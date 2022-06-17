@@ -1,3 +1,4 @@
+from multiprocessing import Array
 from app import models
 
 from flask import request, jsonify, abort, Blueprint, send_from_directory
@@ -22,9 +23,10 @@ def playlists():
         if request.method == "POST":
             title = str(request.data.get('title', ''))
             creator = str(request.data.get('creator', ''))
+            songs_array = request.data.get('songs_array', '')
 
             if title: 
-                playlist = models.Playlist(title=title, creator=creator)
+                playlist = models.Playlist(title=title, creator=creator, songs_array=songs_array)
                 playlist.save()
                 response = jsonify({
                     'id': playlist.id,
@@ -97,7 +99,7 @@ def song_manipulation(id, **kwargs):
 @routes_blueprint.route('/api/playlists/search/<user_id>', methods=['GET', 'PUT', 'DELETE'])
 def playlist_search(user_id, **kwargs):
         # retrieve a playlist using it's ID
-        playlist = models.Playlist.query.filter_by(creator=user_id).first()
+        playlist = models.Playlist.query.filter_by(creator=user_id).all()
         if not playlist:
             # Raise an HTTPException with a 404 not found status status_code
             abort(404)

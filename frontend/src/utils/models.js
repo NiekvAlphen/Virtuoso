@@ -50,36 +50,45 @@ export const getUser = async (id) => {
     }
 }
 
+export const deleteUser = async (id) => {
+  try {
+      fetch('http://127.0.0.1:80/api/users/'+id.toString(), {method: 'DELETE',mode: 'cors'})
+      .then(response => {
+        console.log(response)
+        if(response.status === 201){
+          (response.json()).then((data) => {
+            //this.setState({songs: data['songs']})
+            console.log(data)
+            return true
+          })
+        } else {
+          (response.json()).then(() => {
+            //this.setState({songs: 'error'})
+            return false
+          })
+        }
+      }).catch((error) => {
+          console.log("Error in fetching.", error)
+          return false
+      })
+  } catch (error) {
+      return error
+  }
+}
+
 export const searchSong = async (term) => {
-    try {
-        fetch('http://127.0.0.1:80/api/songs/search/'+term.toString(), {method: 'GET',mode: 'cors'})
-        .then(response => {
+    return fetch('http://127.0.0.1:80/api/songs/search/'+term.toString(), {method: 'GET',mode: 'cors'})
+        .then(response => { 
           console.log(response)
-          if(response.status === 200){
-            (response.json()).then((data) => {
-              //this.setState({songs: data['songs']})
-              console.log(data)
-              return data
-            })
-          } else {
-            (response.json()).then(() => {
-              //this.setState({songs: 'error'})
-              return null
-            })
-          }
+          return response.json()
         }).catch((error) => {
             console.log("Error in fetching.", error)
             return error
         })
-    } catch (error) {
-        return error
-    }
 }
 
 export const savePlaylist = async (data) => {
-    if(!data.name || !data.songs.length){
-        return 
-    }
+  console.log(data)
     try {
         fetch('http://127.0.0.1:80/api/playlists', {method: 'POST', body: data,mode: 'cors'})
         .then(response => {
@@ -105,34 +114,26 @@ export const savePlaylist = async (data) => {
     }
 }
 
-export const getPlaylists = async (user_id) => {
-    let playlistList = []
-    try {
-        fetch('http://127.0.0.1:80/api/playlists/search/'+user_id.toString(), {method: 'GET',mode: 'cors'})
+export const getSong = async (id) => {
+  return fetch('http://127.0.0.1:80/api/songs/'+id.toString(), {method: 'GET',mode: 'cors'})
         .then(response => {
           console.log(response)
-          if(response.status === 201){
-            (response.json()).then((data) => {
-              //this.setState({songs: data['songs']})
-              console.log(data)
-              for (let id of data) {
-                  let playlist = getPlaylist(id)
-                  playlistList.push(playlist)
-              }
-            })
-          } else {
-            (response.json()).then(() => {
-              //this.setState({songs: 'error'})
-              return null
-            })
-          }
+          return response.json()
         }).catch((error) => {
             console.log("Error in fetching.", error)
             return error
         })
-    } catch (error) {
-        return error
-    }
+}
+
+export const getPlaylists = async (user_id) => {
+      return fetch('http://127.0.0.1:80/api/playlists/search/'+user_id.toString(), {method: 'GET',mode: 'cors'})
+        .then(response => {
+          console.log(response)
+          return response.json()
+        }).catch((error) => {
+            console.log("Error in fetching.", error)
+            return error
+        })
 }
 
 export const getPlaylist = async (id) => {

@@ -5,8 +5,10 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Create from './components/Create';
 import Error from './components/Error';
-import MyCollections from './components/MyCollections';
+import MyPlaylists from './components/MyPlaylists';
 import AudioPlayerComponent from './components/AudioPlayerComponent';
+import AudioUpload from './components/AudioUpload';
+import UserProfile from './components/UserProfile';
 
 const Footer = () => {
   const location = useLocation()
@@ -31,7 +33,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/my-collections" element={<MyCollections />} />
+        <Route path="/my-playlists" element={<MyPlaylists />} />
+        <Route path="/upload" element={<AudioUpload />} />
+        <Route path="/user-profile" element={<UserProfile />} />
         <Route path="*" element={<Error />} />
       </Routes>
       <Footer />

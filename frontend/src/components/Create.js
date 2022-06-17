@@ -7,16 +7,27 @@ import { searchSong, savePlaylist, getUser } from '../utils/models';
 const Create = () => {
     const navigate = useNavigate()
     const [userData, setUserData] = useState(getUser())
-    useEffect(() => {}, [navigate])
+    useEffect(() => {
+        if (!localStorage.getItem('user')) {
+            navigate('/')       
+        }
+        setUserData(JSON.parse(localStorage.getItem('user')))
+    }, [navigate])
     const [searchResults, setSearchResults] = useState([])
     const [playListName, setPlayListName] = useState("")
     const [playListSongs, setPlayListSongs] = useState([])
-    const search = (term) => {
-        if (term !== "") {
-            searchSong(term).then((searchResults) => setSearchResults(searchResults))        
+    const search = async (term) => {
+        try {
+            if (term !== "") { 
+                const searchResults = await searchSong(term)
+                setSearchResults(searchResults)
+            }
+            else {
+                document.querySelector("#searchBar").focus()
+            }
         }
-        else {
-            document.querySelector("#searchBar").focus()
+        catch(error) {
+
         }
     }
     const addSong = (song) => {
@@ -42,11 +53,21 @@ const Create = () => {
     const updatePlayListname = (name) => {
         setPlayListName(name)
     }
-    const savePlaylist = (e) => {
+    const saveNewPlaylist = (e) => {
         e.preventDefault()
         if(playListName !== "") {
             alert ("Playlist added successfully...")
-            savePlaylist(userData.id, playListName, playListSongs).then(req => {
+            const data = new FormData()
+            data.append("title", playListName)
+            data.append('creator', 1)
+            //userData.id
+            const songs_array = []
+            for(let i = 0; i < playListSongs.length; i++) {
+                songs_array[i] = playListSongs[i].id
+            }
+            data.append('songs_array', songs_array)
+
+            savePlaylist(data).then(req => {
                 if (req) {
                     setPlayListName("")
                     setPlayListSongs([])
@@ -64,7 +85,7 @@ const Create = () => {
                 <h1>Virtuoso</h1>
                 <article className="section">
                     <SearchResults search={search} searchResults={searchResults} onAdd={doThese}/>
-                    <PlayList playListSongs={playListSongs} playListName={playListName} onNameChange={updatePlayListname} onRemove={removeSong} onSave={savePlaylist} />
+                    <PlayList playListSongs={playListSongs} playListName={playListName} onNameChange={updatePlayListname} onRemove={removeSong} onSave={saveNewPlaylist} />
                 </article>
             </div>
         </>

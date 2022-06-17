@@ -1,4 +1,5 @@
 import React from 'react';
+import NavBar from './NavBar'
 
 class AudioUpload extends React.Component {
   constructor(props) {
@@ -6,10 +7,20 @@ class AudioUpload extends React.Component {
 
     this.state = {
       audioUrl: '',
-      content: ''
+      content: '',
+      userData: ''
     };
 
     this.handleUploadAudio = this.handleUploadAudio.bind(this);
+    this.getUserData = this.getUserData.bind(this);
+
+  }
+  
+  getUserData() {
+      if (!localStorage.getItem('user')) {
+                 
+      }
+      this.state.userData = JSON.parse(localStorage.getItem('user'))
   }
 
   handleUploadAudio(ev) {
@@ -26,7 +37,7 @@ class AudioUpload extends React.Component {
     audioBody.append('audio_file', this.fileName.value);
     audioBody.append('genre', 'dsagasgg');
 
-    fetch('http://127.0.0.1:80/songapi/songs', {
+    fetch('http://127.0.0.1:80/api/songs', {
       method: 'POST',
       body: audioBody,
       mode: 'cors',
@@ -38,7 +49,7 @@ class AudioUpload extends React.Component {
       });
     });
 
-    fetch('http://127.0.0.1:80/songapi/uploadfile', {
+    fetch('http://127.0.0.1:80/api/songs/uploadfile', {
       method: 'POST',
       body: data,
       mode: 'cors',
@@ -50,6 +61,8 @@ class AudioUpload extends React.Component {
 
   render() {
     return (
+    <>
+      <NavBar userData={this.state.userData} />
       <form onSubmit={this.handleUploadAudio}>
         <div>
           <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
@@ -63,6 +76,7 @@ class AudioUpload extends React.Component {
         </div>
         <div src={this.state.audioUrl} alt="mp3" />
       </form>
+    </>
     );
   }
 }

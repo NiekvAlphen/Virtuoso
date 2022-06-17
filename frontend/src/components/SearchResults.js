@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import SongList from './SongList';
 const SearchResults = ({ search, searchResults, onAdd}) => {
+    console.log(searchResults);
     return (
         <>
             <div className="songList">

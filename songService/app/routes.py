@@ -145,7 +145,7 @@ def song_search(term, **kwargs):
 def staticfiles(filename):
     return send_from_directory(app.config["STATIC_FOLDER"], filename)
 
-@routes_blueprint.route('/songapi/uploadfile',methods=['GET','POST'])
+@routes_blueprint.route('/api/songs/uploadfile',methods=['GET','POST'])
 def uploadfile():
     if request.method == 'POST':
         f = request.files['file']

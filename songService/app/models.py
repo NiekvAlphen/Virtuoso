@@ -35,7 +35,7 @@ class Song(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        #publish('product_deleted', self.id)
+        publish('product_deleted', self.id)
     
     def __repr__(self):
         return "".format(self.title)

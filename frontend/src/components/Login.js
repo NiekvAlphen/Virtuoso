@@ -41,7 +41,7 @@ class Login extends React.Component {
                 //this.setState({songs: data['songs']})
                 console.log('loginData: '+data)
                 console.log("successful login")
-                var user = { 'id': data.id, 'username': data.username, 'password': data.password, 'email': data.email, 'image': data.image };
+                var user = { 'id': data.id, 'username': data.username, 'password': '', 'email': data.email, 'image': data.image };
                 localStorage.setItem('user', JSON.stringify(user));
                 this.props.navigate('/create');
             })

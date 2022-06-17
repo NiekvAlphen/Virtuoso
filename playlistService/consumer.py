@@ -1,7 +1,9 @@
 import pika, json
 
-from app.models import Playlist
-from app import db
+from app import models
+from app import db, create_app
+app = create_app('production')
+app.app_context().push()
 
 params = pika.URLParameters('amqps://ohisbkdk:RtzvaML4ppyUkzjFWOQ6PasiCPOqZHbI@hawk.rmq.cloudamqp.com/ohisbkdk')
 
@@ -20,6 +22,12 @@ def callback(ch, method, properties, body):
         print('Song Created')
 
     elif properties.content_type == 'product_deleted':
+        # remove songid from songs_array
+        print(data)
+        playlists = models.Playlist.query.filter(models.Playlist.songs_array == data).all()
+        for playlist in playlists:
+            playlist.deletesong()
+        
         print('Song Deleted')
 
 channel.basic_consume(queue='playlist_queue', on_message_callback=callback, auto_ack=True)

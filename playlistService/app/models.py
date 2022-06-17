@@ -10,13 +10,14 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     creator = db.Column(db.Integer)
-    songs_array = db.Column(db.JSON)
+    songs_array = db.Column(db.ARRAY(db.Integer))
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    def __init__(self, title, songs_array):
+    def __init__(self, title, creator, songs_array):
         """Initialize with title."""
         self.title = title
+        self.creator = creator
         self.songs_array = songs_array
 
     def save(self):
@@ -29,6 +30,11 @@ class Playlist(db.Model):
     
     def delete(self):
         db.session.delete(self)
+        db.session.commit()
+
+    def deletesong(self):
+        self.songs_array = ""
+        db.session.add(self)
         db.session.commit()
     
     def __repr__(self):

@@ -2,29 +2,27 @@
 
 import os
 from dotenv import load_dotenv
-import urllib
-from sqlalchemy import create_engine
+from pathlib import Path
 import pymssql
 
-load_dotenv()
+dotenv_path = Path('../.env')
+load_dotenv(dotenv_path=dotenv_path)
 
 class Config(object):
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
     SECRET = os.getenv('SECRET')
-    #SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
-    #SQLALCHEMY_DATABASE_URI = os.getenv('SQLAZURECONNSTR__WWIF')
 
 class DevelopmentConfig(object):
     """Configurations for development."""
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@user_db:5432/user_db'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     DEBUG = True
 
 class TestingConfig(object):
     """Configurations for Testing, with a seperate test database."""
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/test_db'
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL')
     DEBUG = True
 
 class StagingConfig(object):
@@ -33,9 +31,7 @@ class StagingConfig(object):
 
 class ProductionConfig(object):
     """Configurations for Production."""
-    #params = urllib.parse.quote_plus("Driver={ODBC Driver 13 for SQL Server};Server=tcp:virtuosodb.database.windows.net,1433;Database=virtuoso-user-db;Uid=niekva;Pwd=*Ws>C+7jT=5bLTc>;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
-    #SQLALCHEMY_DATABASE_URI = "mssql+pyodbc:///?odbc_connect=%s" % params
-    SQLALCHEMY_DATABASE_URI = "mssql+pymssql://niekva:*Ws>C+7jT=5bLTc>@virtuosodb.database.windows.net/virtuoso-user-db"
+    SQLALCHEMY_DATABASE_URI = "mssql+pymssql://niekva:niek1234$"+"@virtuososerver.database.windows.net/virtuosoUsers"
     DEBUG = False
     TESTING = False
 

@@ -2,28 +2,28 @@
 
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 import pymssql
 
-load_dotenv()
+dotenv_path = Path('../.env')
+load_dotenv(dotenv_path=dotenv_path)
 
 class Config(object):
     """Parent configuration class."""
     DEBUG = False
     CSRF_ENABLED = True
     SECRET = os.getenv('SECRET')
-    #SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLAZURECONNSTR__WWIF')
     STATIC_FOLDER = f"{os.getenv('APP_FOLDER')}/static"
 
 class DevelopmentConfig(object):
     """Configurations for development."""
-    #SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@song_db:5432/flask_api'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     DEBUG = True
 
 class TestingConfig(object):
     """Configurations for Testing, with a seperate test database."""
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/test_db'
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL')
     DEBUG = True
 
 class StagingConfig(object):
@@ -34,7 +34,7 @@ class ProductionConfig(object):
     """Configurations for Production."""
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = "mssql+pymssql://niekva:*Ws>C+7jT=5bLTc>@virtuosodb.database.windows.net/virtuoso"
+    SQLALCHEMY_DATABASE_URI = "mssql+pymssql://niekva:niek1234$"+"@virtuososerver.database.windows.net/virtuosoSongs"
 
 app_config = {
     'development': DevelopmentConfig,
