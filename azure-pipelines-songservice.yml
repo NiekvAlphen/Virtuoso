@@ -44,7 +44,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - upload: manifests
+    - upload: $(System.DefaultWorkingDirectory)/songService/manifests
       artifact: manifests
 
 - stage: Deploy
