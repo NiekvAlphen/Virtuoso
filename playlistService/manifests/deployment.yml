@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playlist-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playlist-service
+  template:
+    metadata:
+      labels:
+        app: playlist-service
+    spec:
+      containers:
+        - name: playlist-service
+          image: niekvalphen/playlistapici:latest
+          ports:
+          - containerPort: 80

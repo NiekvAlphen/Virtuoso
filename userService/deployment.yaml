@@ -3,32 +3,34 @@ kind: Service
 metadata:
   name: user-service
 spec:
+  type: LoadBalancer
   selector:
     app: user
   ports:
-  - protocol: "TCP"
-    port: 6000
-    targetPort: 5000
-  type: LoadBalancer
+    - protocol: "TCP"
+      port: 8000
+      targetPort: 5000
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user
+  labels:
+    type: restapi
 spec:
-  selector:
+  selector: 
     matchLabels:
       app: user
-  replicas: 4
+  replicas: 3
   template:
     metadata:
+      name: user
       labels:
         app: user
     spec:
       containers:
-      - name: user
-        image: niekvalphen/userapici:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5000
+        - name: user
+          image: niekvalphen/userapici:latest
+          ports:
+            - containerPort: 5000

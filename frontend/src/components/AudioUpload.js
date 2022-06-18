@@ -27,8 +27,41 @@ class AudioUpload extends React.Component {
     ev.preventDefault();
 
     const data = new FormData();
-    data.append('file', this.uploadInput.files[0]);
+
+    const blob = new Blob(this.uploadInput.files[0], {type: 'audio/webm'});
+    const file = new File([blob], this.fileName.value, {type: 'audio/webm'});
+    data.append('file', file);
     data.append('filename', this.fileName.value);
+
+    console.log(this.uploadInput.files[0]);
+    console.log(this.uploadInput)
+    console.log(this.uploadInput.files)
+    console.log(this.fileName.value);
+
+    const { BlobServiceClient } = require("@azure/storage-blob");
+
+    const connStr = "DefaultEndpointsProtocol=https;AccountName=virtuosoopslag;AccountKey=fmzulsM8DvOn0zueNvTu6sTx6AwwTvnl/PAiH9F/ILPH2BWkEIG107mLeAGxXY7mL5g1rR3FWHXy+AStoUlmWg==;EndpointSuffix=core.windows.net";
+
+    const blobServiceClient = BlobServiceClient.fromConnectionString(connStr);
+
+    async function main() {
+      const containerClient = blobServiceClient.getContainerClient('songs');
+
+      const content = this.uploadInput.files;
+      const blobName = this.fileName.value;
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+      const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
+      console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+    }
+
+    main();
+
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
 
     const audioBody = new FormData();
     audioBody.append('id', 2);
@@ -41,6 +74,7 @@ class AudioUpload extends React.Component {
       method: 'POST',
       body: audioBody,
       mode: 'cors',
+      config: config,
     }).then((response) => {
       response.json().then((body) => {
         console.log(data.fileName);
@@ -49,14 +83,14 @@ class AudioUpload extends React.Component {
       });
     });
 
-    fetch('http://127.0.0.1:80/api/songs/uploadfile', {
+    /*fetch('http://127.0.0.1:80/api/songs/uploadfile', {
       method: 'POST',
       body: data,
       mode: 'cors',
     }).then((response) => {
         console.log(response)
         this.setState({ content: response.body });
-    });
+    });*/
   }
 
   render() {

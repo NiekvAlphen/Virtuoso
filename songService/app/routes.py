@@ -2,6 +2,8 @@ from app import models
 
 from flask import request, jsonify, abort, Blueprint, send_from_directory
 from werkzeug.utils import secure_filename
+from azure.storage.blob import BlobServiceClient, BlobClient
+from azure.storage.blob import ContentSettings, ContainerClient
 
 from app import app
 
@@ -146,13 +148,14 @@ def staticfiles(filename):
     return send_from_directory(app.config["STATIC_FOLDER"], filename)
 
 @routes_blueprint.route('/api/songs/uploadfile',methods=['GET','POST'])
-def uploadfile():
-    if request.method == 'POST':
-        f = request.files['file']
-        filename = secure_filename(f.filename)
+def init():    
 
-        f.save(app.config['UPLOAD_FOLDER'] + filename)
+    connect_str = "DefaultEndpointsProtocol=https;AccountName=virtuosoopslag;AccountKey=fmzulsM8DvOn0zueNvTu6sTx6AwwTvnl/PAiH9F/ILPH2BWkEIG107mLeAGxXY7mL5g1rR3FWHXy+AStoUlmWg==;EndpointSuffix=core.windows.net"
 
-        with open(app.config['UPLOAD_FOLDER'] + filename,"rb") as f:
-            content = f.read()
-        return content
+    blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+
+    blob_client = blob_service_client.get_blob_client(container='songs', blob=str(request.data.get('filename', ''))+'.mp3')
+
+    print("\nUploading to Azure Storage as blob:\n\t" + str(request.data.get('filename', '')))
+
+    blob_client.upload_blob(request.data.get('file', ''))
