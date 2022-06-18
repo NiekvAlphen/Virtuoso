@@ -13,12 +13,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'd0e3ee37-13b1-4c07-8b37-886f90a51e1f'
+  dockerRegistryServiceConnection: 'b3e07952-4c9b-4d7a-bf1d-0728f04884e2'
   imageRepository: 'userService'
-  containerRegistry: 'virtuosoregistery.azurecr.io'
+  containerRegistry: 'virtuosoregister.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'virtuosoregistery1b0a-auth'
+  imagePullSecret: 'virtuosoregisterbb5d-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -35,13 +35,6 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'sonarcloud'
-        organization: '409046'
-        scannerMode: 'CLI'
-        configMode: 'file'
-
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -51,14 +44,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-
     - upload: $(System.DefaultWorkingDirectory)/userService/manifests
       artifact: manifests
-    
-    - task: SonarCloudAnalyze@1
-    - task: SonarCloudPublish@1
-      inputs:
-        pollingTimeoutSec: '300'
 
 - stage: Deploy
   displayName: Deploy stage
@@ -70,7 +57,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'userService.ingress-basic'
+    environment: 'userService.default'
     strategy:
       runOnce:
         deploy:
@@ -93,7 +80,6 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
@@ -134,7 +120,6 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
           - task: Kubernetes@1
             name: get
             displayName: 'Get services in the new namespace'
