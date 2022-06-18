@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: playlistservice 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playlistservice
+  template:
+    metadata:
+      labels:
+        app: playlistservice 
+    spec:
+      containers:
+        - name: playlistservice 
+          image: virtuosoregister.azurecr.io/playlistservice
+          ports:
+          - containerPort: 80
